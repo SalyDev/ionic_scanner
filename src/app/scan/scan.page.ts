@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -5,6 +6,7 @@ import { BarcodeFormat } from '@zxing/library';
 import { BehaviorSubject } from 'rxjs';
 import { AppInfoDialogComponent } from '../app-info-dialog/app-info-dialog.component';
 import { FormatsDialogComponent } from '../formats-dialog/formats-dialog.component';
+import { UtilService } from '../util.service';
 
 @Component({
   selector: 'app-scan',
@@ -34,7 +36,9 @@ export class ScanPage {
 
   constructor(
     private router: Router,
-    private readonly _dialog: MatDialog
+    private readonly _dialog: MatDialog,
+    private utilService: UtilService,
+    private http: HttpClient
     )
      { }
 
@@ -49,6 +53,31 @@ export class ScanPage {
 
   onCodeResult(resultString: string) {
     this.qrResultString = resultString;
+
+    this.utilService.montantBehavior.subscribe(
+      (montant)=>{
+
+        console.log(montant)
+
+        if(montant && montant!="" && montant!=0)
+        {
+           // on envoie le body
+          const body = 
+          {
+            "client": "ZfAwWfuIPhI5bCjTTibJ",
+            "marchand": "oT2YgidsRiKac0ccoxzb",
+            "montant": montant
+          }
+          console.log(body);
+          this.http.post('https://us-central1-fayyfepp-dev.cloudfunctions.net/paiements', body).subscribe({
+            next(x) { console.log(x); },
+            error(err) { console.error(err); },
+            complete() { console.log('done'); }
+           })
+        }
+      }
+    )
+   
   }
 
   onDeviceSelectChange(selected: string) {
@@ -96,6 +125,35 @@ export class ScanPage {
 
   getBack() {
     this.router.navigate([''])
+  }
+
+
+  // 
+  sendCashIn(){
+    this.utilService.montantBehavior.subscribe(
+      (montant)=>{
+
+        console.log(montant)
+
+        if(montant && montant!="" && montant!=0)
+        {
+           // on envoie le body
+          const body = 
+          {
+            "client": "ZfAwWfuIPhI5bCjTTibJ",
+            "marchand": "oT2YgidsRiKac0ccoxzb",
+            "montant": montant
+          }
+          console.log(body);
+          this.http.post('https://us-central1-fayyfepp-dev.cloudfunctions.net/paiements', body).subscribe({
+            next(x) { console.log(x); },
+            error(err) { console.error(err); },
+            complete() { console.log('done'); }
+           })
+        }
+      }
+    )
+   
   }
 }
 

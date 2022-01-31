@@ -12,6 +12,7 @@ declare var google: any;
 })
 export class UtilService {
 
+  montantBehavior = new BehaviorSubject(null);
   marchandSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   constructor(
     private db: AngularFirestore,

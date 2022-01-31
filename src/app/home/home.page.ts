@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { UtilService } from '../util.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage implements OnInit {
 
-  constructor() { }
+  montant: FormControl = new FormControl();
+
+  constructor(private utilService: UtilService) { }
 
   ngOnInit() {
+  }
+
+  scanQr(){
+    this.utilService.montantBehavior.next(this.montant.value);
   }
 
 }

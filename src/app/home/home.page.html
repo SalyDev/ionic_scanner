@@ -26,8 +26,12 @@
     </ion-card-header> -->
   
     <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Montant</ion-label>
+        <ion-input name="montant" [formControl]="montant"></ion-input>
+      </ion-item>
       <div style="margin-top: 20px;">
-        <ion-button class="btn-secondaire" expand="block" routerLink="/scan">Scanner un code QR</ion-button>
+        <ion-button class="btn-secondaire" expand="block" routerLink="/scan" (click)="scanQr()">Scanner le code QR</ion-button>
       </div>
     </ion-card-content>
   </ion-card>
